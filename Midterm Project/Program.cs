@@ -1,11 +1,10 @@
-﻿
-using System.Data;
+﻿using System.Data;
 using System.Text;
 
-void calc()
+void Calc()
 {
 
-    int a,b;
+    int a, b;
     string temp;
 
     while (true)
@@ -50,7 +49,7 @@ void calc()
                 Console.WriteLine($"{a}*{b}={a * b}");
                 break;
             case "/":
-                if (b== 0)
+                if (b == 0)
                 {
                     throw new DivideByZeroException("Can't divide by 0!");
                 }
@@ -59,27 +58,28 @@ void calc()
 
         }
     }
-    catch(DivideByZeroException dv){
-        Console.WriteLine(dv.Message); 
+    catch (DivideByZeroException dv)
+    {
+        Console.WriteLine(dv.Message);
     }
     catch (Exception ex)
     {
         Console.WriteLine(ex.Message);
     }
-    
+
 
 }
 
-//calc();
+//Calc();
 
 
 
 
-void guessNumber()
+void GuessNumber()
 {
     Console.WriteLine("computer picked a number between 0 and 100");
-    int n = new Random().Next(0,101);
-    int a=-1, counter=0;
+    int n = new Random().Next(0, 101);
+    int a = -1, counter = 0;
 
     do
     {
@@ -98,44 +98,44 @@ void guessNumber()
         {
             Console.WriteLine("computer's number is higher");
         }
-        
+
     }
     while (n != a);
-    
+
 }
 
-//guessNumber();
+//GuessNumber();
 
 
 
 
-void hangman()
+void Hangman()
 {
     string[] strings = { "computer", "laptop", "water", "dog", "cat", "plant", "guitar", "program", "child", "book" };
-    string word = strings[new Random().Next(0,strings.Length)];
+    string word = strings[new Random().Next(0, strings.Length)];
     Console.Write("enter maximum number of attempts: ");
     int attempts = int.Parse(Console.ReadLine());
     string answer = "";
-    for (int i=0; i<word.Length; i++)
+    for (int i = 0; i < word.Length; i++)
     {
         answer += "_ ";
     }
     Console.WriteLine(answer);
 
-    while(attempts > 0) 
+    while (attempts > 0)
     {
         attempts--;
         Console.WriteLine("enter letter: ");
         char ch = char.Parse(Console.ReadLine());
-        
+
         if (word.Contains(ch))
         {
             char[] charArray = answer.ToCharArray();
-            for (int j=0; j<word.Length; j++)
+            for (int j = 0; j < word.Length; j++)
             {
                 if (word[j] == ch)
                 {
-                    charArray[2*j] = ch;
+                    charArray[2 * j] = ch;
                 }
             }
             answer = new string(charArray);
@@ -159,15 +159,323 @@ void hangman()
         Console.WriteLine("you failed!");
 }
 
-//hangman();
+//Hangman();
 
 
 
 
-void translator()
+void Translator()
 {
-    Console.WriteLine("choose number: \n1 - from georgian to english\n2 - from english to georgian\n3 - from georgian to russian\n4 - from russian to georgian");
-    string temp = Console.ReadLine();
+    string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\geotoeng.txt";
+    using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+    {
+        using (StreamWriter sw = new StreamWriter(fs))
+        {
+            sw.WriteLine("sarke-mirror\r\nwigni-book\r\nmagida-table\r\nqalaqi-city\r\nchanta-bag\r\nskami-chair\r\n");
+        }
+    }
+
+    path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\engtogeo.txt";
+    using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+    {
+        using (StreamWriter sw = new StreamWriter(fs))
+        {
+            sw.WriteLine("mirror-sarke\r\nbook-wigni\r\ntable-magida\r\ncity-qalaqi\r\nbag-chanta\r\nchair-skami");
+        }
+    }
+
+    path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\geotorus.txt";
+    using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+    {
+        using (StreamWriter sw = new StreamWriter(fs))
+        {
+            sw.WriteLine("sarke-zerkalo\r\nwigni-kniga\r\nmagida-stol\r\nqalaqi-gorod\r\nchanta-sumka");
+        }
+    }
+
+    path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\rustogeo.txt";
+    using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+    {
+        using (StreamWriter sw = new StreamWriter(fs))
+        {
+            sw.WriteLine("zerkalo-sarke\r\nkniga-wigni\r\nstol-magida\r\ngorod-qalaqi\r\nsumka-chanta");
+        }
+    }
+
+
+    string from = "", to = "";
+
+    while (true)
+    {
+        Console.WriteLine("choose number: \n1 - from georgian to english\n2 - from english to georgian\n3 - from georgian to russian\n4 - from russian to georgian\n5 - exit program");
+        path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string temp;
+
+
+        while (true)
+        {
+            temp = Console.ReadLine();
+            bool endwhile = true;
+
+            switch (temp)
+            {
+                case "1":
+                    path += @"\geotoeng.txt";
+                    from = "geo";
+                    to = "eng";
+                    break;
+                case "2":
+                    path += @"\engtogeo.txt";
+                    from = "eng";
+                    to = "geo";
+                    break;
+                case "3":
+                    path += @"\geotorus.txt";
+                    from = "geo";
+                    to = "rus";
+                    break;
+                case "4":
+                    path += @"\rustogeo.txt";
+                    from = "rus";
+                    to = "geo";
+                    break;
+                case "5":
+                    return;
+                default:
+                    Console.WriteLine("enter correct number!");
+                    endwhile = false;
+                    break;
+            }
+
+            if (endwhile) { break; }
+
+
+        }
+
+
+        Console.WriteLine("enter word or phrase to translate: ");
+        string text = Console.ReadLine();
+        bool notranslation = true;
+        try
+        {
+            using (StreamReader sr = new StreamReader(path))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if (text == line.Split("-")[0])
+                    {
+                        Console.WriteLine($"translated text: {line.Split("-")[1]}");
+                        notranslation = false;
+                        break;
+                    }
+                }
+            }
+            if (notranslation)
+            {
+                Console.WriteLine($"{text} not found in dictionary. enter translation: ");
+                string translation = Console.ReadLine();
+                using (StreamWriter sw = new StreamWriter(path, true))
+                {
+                    sw.WriteLine($"{text}-{translation}");
+                }
+
+                path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $@"\{to}to{from}.txt";
+                using (StreamWriter sw = new StreamWriter(path, true))
+                {
+                    sw.WriteLine($"{translation}-{text}");
+                }
+                Console.WriteLine("translation added!");
+
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+
 }
 
-translator();
+//Translator();
+
+
+
+
+void Atm()
+{
+    string dirPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\users";
+    DirectoryInfo dir = new DirectoryInfo(dirPath);
+    dir.Create();
+
+    while (true)
+    {
+        Console.WriteLine("1 - register user\n2 - check balanse\n3 - deposit money\n4 - withdraw money\n5 - exit");
+        string temp = Console.ReadLine();
+        if (temp == "5") { break; }
+
+        if (temp == "1")
+        {
+            Console.Write("enter username: ");
+            string username = Console.ReadLine();
+            string path = dirPath + @$"\{username}.txt";
+            FileInfo fileInfo = new FileInfo(path);
+            if (fileInfo.Exists)
+            {
+                Console.WriteLine($"user {username} already exists!");
+            }
+            else
+            {
+                Random rand = new Random();
+                int balance = rand.Next(500, 10000);
+                //Console.Write("enter balance: ");
+                //int balance = int.Parse(Console.ReadLine());
+                using (StreamWriter sw = new StreamWriter(path))
+                {
+                    sw.WriteLine(balance);
+                }
+                Console.WriteLine("user added!");
+            }
+
+        }
+        else if (temp == "2")
+        {
+            Console.Write("enter username: ");
+            string username = Console.ReadLine();
+            string path = dirPath + @$"\{username}.txt";
+
+            FileInfo fileInfo = new FileInfo(path);
+            if (!fileInfo.Exists)
+            {
+                Console.WriteLine($"{username} doesn't exist!");
+                continue;
+            }
+
+            string line;
+            int balance;
+            using (StreamReader sr = new StreamReader(path))
+            {
+                if ((line = sr.ReadLine()) != null)
+                {
+                    balance = int.Parse(line);
+                    Console.WriteLine($"balance: ${balance}");
+                }
+            }
+        }
+        else if (temp == "3")
+        {
+            Console.Write("enter username: ");
+            string username = Console.ReadLine();
+            string path = dirPath + @$"\{username}.txt";
+
+            FileInfo fileInfo = new FileInfo(path);
+            if (!fileInfo.Exists)
+            {
+                Console.WriteLine($"{username} doesn't exist!");
+                continue;
+            }
+
+            int newmoney, oldmoney = 0;
+            string line;
+            using (StreamReader sr = new StreamReader(path))
+            {
+                if ((line = sr.ReadLine()) != null)
+                {
+                    oldmoney = int.Parse(line);
+                }
+            }
+
+
+            Console.Write("enter amount of money: ");
+            while (true)
+            {
+                try
+                {
+                    newmoney = int.Parse(Console.ReadLine());
+                    if (newmoney < 0)
+                    {
+                        Console.Write("enter positive number: ");
+                        continue;
+                    }
+                    newmoney += oldmoney;
+                    break;
+                }
+                catch (OverflowException oe)
+                {
+                    Console.Write("enter lower number: ");
+                }
+                catch (Exception e)
+                {
+                    Console.Write("enter correct number: ");
+                }
+            }
+            File.WriteAllText(path, newmoney.ToString());
+            Console.WriteLine($"total amount: {newmoney}");
+
+        }
+        else if (temp == "4")
+        {
+            Console.Write("enter username: ");
+            string username = Console.ReadLine();
+            string path = dirPath + @$"\{username}.txt";
+
+            FileInfo fileInfo = new FileInfo(path);
+            if (!fileInfo.Exists)
+            {
+                Console.WriteLine($"{username} doesn't exist!");
+                continue;
+            }
+
+            int newmoney, oldmoney = 0;
+            string line;
+            using (StreamReader sr = new StreamReader(path))
+            {
+                if ((line = sr.ReadLine()) != null)
+                {
+                    oldmoney = int.Parse(line);
+                }
+            }
+
+
+            Console.Write("enter amount of money: ");
+            while (true)
+            {
+                try
+                {
+                    newmoney = int.Parse(Console.ReadLine());
+                    if (newmoney < 0)
+                    {
+                        Console.Write("enter positive number: ");
+                        continue;
+                    }
+                    if (newmoney > oldmoney)
+                    {
+                        Console.Write("not enough money!\nenter lower number: ");
+                        continue;
+                    }
+                    newmoney = oldmoney - newmoney;
+                    break;
+                }
+                catch (OverflowException oe)
+                {
+                    Console.Write("enter lower number: ");
+                }
+                catch (Exception e)
+                {
+                    Console.Write("enter correct number: ");
+                }
+            }
+            File.WriteAllText(path, newmoney.ToString());
+            Console.WriteLine($"total amount: {newmoney}");
+        }
+        else
+        {
+            Console.WriteLine("wrong input!");
+        }
+
+    }
+}
+
+
+//Atm();

@@ -1,6 +1,6 @@
-﻿
-using Midterm_Project;
+﻿using Midterm_Project;
 using System.Data;
+using System.Diagnostics;
 using System.Text;
 
 #region Calculator function
@@ -8,50 +8,43 @@ void Calc() //ვქმნით კალკულატორის ფუნ�
 {
 
     int a, b;
-    string temp;
+    char temp;
 
-    while (true)
+    Console.Write("enter first number: "); //შემოგვყავს პირველი რიცხვი
+    while (!int.TryParse(Console.ReadLine(), out a)) //ვამოწმებთ int ტიპის შემოდის თუ არა, თუ კი ვწერთ ცვლად a-ში
     {
-        Console.Write("enter first number: "); //შემოგვყავს პირველი რიცხვი
-        if (int.TryParse(Console.ReadLine(), out a)) //ვამოწმებთ int ტიპის შემოდის თუ არა, თუ კი ვწერთ ცვლად a-ში
-        {
-            break;
-        }
-        Console.WriteLine("enter valid number!");
-    }
-    while (true)
-    {
-        Console.Write("enter second number: ");  //შემოგვყავს მეორე რიცხვი
-        if (int.TryParse(Console.ReadLine(), out b))  //ვამოწმებთ int ტიპის შემოდის თუ არა, თუ კი ვწერთ ცვლად b-ში
-            break;
-        Console.WriteLine("enter valid number!");
-    }
-    while (true)
-    {
-        Console.Write("enter operator [+,-,*,/]: "); //ვირჩევთ მოქმედებას
-        temp = Console.ReadLine();
-        if (temp == "+" || temp == "-" || temp == "*" || temp == "/") //ვამოწმებთ მითითებული ოპერატორებიდან თუ შეგვყავს სწორად
-            break;
-        Console.WriteLine("enter valid operator!");
+        Console.Write("enter valid number: ");
     }
 
 
+    Console.Write("enter second number: "); //შემოგვყავს პირველი რიცხვი
+    while (!int.TryParse(Console.ReadLine(), out b)) //ვამოწმებთ int ტიპის შემოდის თუ არა, თუ კი ვწერთ ცვლად b-ში
+    {
+        Console.Write("enter valid number: ");
+    }
+
+
+    Console.Write("enter operator [+,-,*,/]: "); //ვირჩევთ მოქმედებას
+    while (!char.TryParse(Console.ReadLine(), out temp) || !(temp == '+' || temp == '-' || temp == '*' || temp == '/')) //ვამოწმებთ მითითებული ოპერატორებიდან თუ შეგვყავს სწორად
+    {
+        Console.Write("enter valid operator: ");
+    }
 
 
     try
     {
         switch (temp) //ვასრულებთ მოქმედებებს
         {
-            case "+":
+            case '+':
                 Console.WriteLine($"{a}+{b}={a + b}");
                 break;
-            case "-":
+            case '-':
                 Console.WriteLine($"{a}-{b}={a - b}");
                 break;
-            case "*":
+            case '*':
                 Console.WriteLine($"{a}*{b}={a * b}");
                 break;
-            case "/":
+            case '/':
                 if (b == 0) //ვამოწმებთ 0-ზე ხომ არ ვყოფთ
                 {
                     throw new DivideByZeroException("Can't divide by 0!"); //გადავცემთ ახალ exception-ს
@@ -90,7 +83,10 @@ void GuessNumber()
     do //ეშვება while-მდე
     {
         Console.Write("guess the number: ");
-        a = int.Parse(Console.ReadLine()); //მომხმარებელს შემოჰყავს რიცხვი
+        while (!int.TryParse(Console.ReadLine(), out a)) //მომხმარებელს შემოჰყავს რიცხვი, რომელიც უნდა იყოს ინტ
+        {
+            Console.Write("enter correct number: ");
+        }
         counter++; //ვითვლით მცდელობების რაოდენობას
         if (a == n) //თუ მომხამერებელი გამოიცნობს ჩაფიქრებულ რიცხვს
         {
@@ -123,7 +119,13 @@ void Hangman()
     string[] strings = { "computer", "laptop", "water", "dog", "cat", "plant", "guitar", "program", "child", "book" }; //ვქმნით სიტყვების მასივს თამაშისთვის
     string word = strings[new Random().Next(0, strings.Length)]; //ვირჩევთ მასივიდან შემთხვევით სიტყვას თამაშის დასაწყებად
     Console.Write("enter maximum number of attempts: ");
-    int attempts = int.Parse(Console.ReadLine()); //მომხმარებელი თავად ირჩევს წინასწარ თუ რამდენი მცდელობა ექნება
+    int attempts;
+    //მომხმარებელი თავად ირჩევს წინასწარ თუ რამდენი მცდელობა ექნება
+    while (!int.TryParse(Console.ReadLine(), out attempts) || attempts <= 0) //უნდა იყოს ინტ და დადებითი რიცხვი
+    {
+        Console.Write("enter correct number: ");
+    }
+
     string answer = "";
     for (int i = 0; i < word.Length; i++)
     {
@@ -133,9 +135,13 @@ void Hangman()
 
     while (attempts > 0) //მანამდე გრძელდება თამაში სანამ ცდების რაოდენობა არ ამოიწურება
     {
-        attempts--;
-        Console.WriteLine("enter letter: "); //სათითაოდ შემოაქვს მომხმარებელს ასოები
-        char ch = char.Parse(Console.ReadLine());
+        Console.Write("enter letter: "); //სათითაოდ შემოაქვს მომხმარებელს ასოები
+        char ch;
+        while (!char.TryParse(Console.ReadLine().ToLower(), out ch)) //ვამოწმებთ ასო თუ სწორად შეჰყავს, უნდა იყოს ჩარი
+        {
+            Console.Write("enter correct letter: ");
+        }
+
 
         if (word.Contains(ch)) //ვამოწმებთ ჩაფიქრებულ სიტყვაში არის თუ არა ეს ასო
         {
@@ -161,7 +167,8 @@ void Hangman()
         }
         else
         {
-            Console.WriteLine($"can't guess the letter. {attempts} attempts left."); // //ვამცნობთ რომ ვერ გამოიცნო და რამდენი მცდელობა დარჩა
+            attempts--;
+            Console.WriteLine($"can't guess the letter. {attempts} attempts left."); //ვამცნობთ რომ ვერ გამოიცნო და რამდენი მცდელობა დარჩა
         }
     }
     if (attempts == 0)

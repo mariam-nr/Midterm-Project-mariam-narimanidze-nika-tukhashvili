@@ -5,7 +5,7 @@ namespace Midterm_Project
 {
     internal class BookManager //ვქმნით კლასს
     {
-        private List<Book> _books = new List<Book>(); //წიგნების ლისტი
+        private List<Book> _books = new List<Book>(); //წიგნების ლისტი, encapsulation
 
         public void AddBook(string title, string author, int releaseYear) //ფუნქცია ამატებს ახალ წიგნს
         {

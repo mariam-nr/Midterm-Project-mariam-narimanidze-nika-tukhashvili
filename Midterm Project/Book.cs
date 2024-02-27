@@ -18,7 +18,7 @@ namespace Midterm_Project
             Author = "N/A";
         }
 
-        public Book(string title, string author, int releaseYear) //კონსტრუქტორი
+        public Book(string title, string author, int releaseYear) //overload,polymorphism
         {
             Title = title;
             Author = author;

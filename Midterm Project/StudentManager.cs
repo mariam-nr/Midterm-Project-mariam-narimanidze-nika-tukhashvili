@@ -4,7 +4,7 @@ namespace Midterm_Project
 {
     public class StudentManager
     {
-        private List<Student> _students = new List<Student>(); //სტუდენტების ლისტი
+        private List<Student> _students = new List<Student>(); //სტუდენტების ლისტი, encapsulation
 
         public void AddStudent(string name, int rollnumber, char grade) //ფუნქცია ამატებს ახალ სტუდენტს
         {
